@@ -16,10 +16,26 @@ print(f'Текущий список рейтингов: {my_list}')
 
 while nextStep:
     new_value = input('Введите ещё одно значение рейтинга: ')
+    # с использованием sort():
+    # if new_value.isdigit():
+    #     my_list.append(int(new_value))
+    #     my_list.sort()
+    #     my_list.reverse()
+    #     print(my_list)
+
+    # без использования sort():
     if new_value.isdigit():
-        my_list.append(int(new_value))
-        my_list.sort()
-        my_list.reverse()
+        new_value = int(new_value)
+        inserted: bool = False
+        for index, item in enumerate(my_list):
+            if new_value > item:
+                my_list.insert(index, new_value)
+                inserted = True
+                break
+
+        if not inserted:
+            my_list.append(new_value)
+
         print(my_list)
     else:
         print(f'Спасибо за использование нашей системы рейтингов! \r\nИтоговый результат: {my_list}')
