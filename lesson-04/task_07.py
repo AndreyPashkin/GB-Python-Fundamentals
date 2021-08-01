@@ -7,19 +7,19 @@
 
 from functools import reduce
 
-n = 5
+n = 10
 
 
 def my_func(prev_item, item):
     return prev_item * item
 
 
-def fact(number):
-    for item in range(1, number + 1):
-        yield reduce(my_func, range(1, number + 1))
+def fact(number: int):
+    i = 0
+    while i < number:
+        i += 1
+        yield reduce(my_func, range(1, i + 1))
 
 
 for el in fact(n):
     print(el)
-
-# ещё не доделал :( пушу, чтобы успеть во время сдачи - доделаю
