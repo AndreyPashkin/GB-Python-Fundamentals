@@ -4,8 +4,6 @@
 # В базовом классе определить параметры, общие для приведенных типов.
 # В классах-наследниках реализовать параметры, уникальные для каждого типа оргтехники.
 
-import json
-
 
 class Equipment:
     def __init__(self, equipment_id, name, price):
@@ -59,17 +57,22 @@ class Storage:
         self.stored_equipment = stored_equipment
 
     def __str__(self):
-        # Попытка отформатировать вывод. Почему-то такая конструкция не сработала:
-        # json.loads(json.dumps(json_stored_equipment, indent=4, sort_keys=True)))
-        formatted_string = self.stored_equipment.replace(" [", " \n  [")
-        formatted_string = formatted_string.replace("], ", "], \n ")
-        formatted_string = formatted_string.replace("}, ", "}, \n    ")
-        formatted_string = formatted_string.replace("}]}", "}]\n}")
-        return f'Данные склада: \n{json.loads(json.dumps(formatted_string))}'
+        result = ''
+        stored_equipment = self.stored_equipment
+        for j, section in enumerate(stored_equipment):
+            result += "-" * 45 + '\n'
+            result += f'Тип оборудования: {section} \n'
+            result += "{:>4} {:>15} {:>7} {:>15} \n".format("ID", "Название", "Цена", "Тип")
+            for i, item in enumerate(stored_equipment[section]):
+                result += "{:>4} {:>15} {:>7} {:>15} \n".format(item["equipment_id"],
+                                                                item["name"], item["price"],
+                                                                item["printer_type"])
+        result += "-" * 45 + '\n'
+        return f'Данные склада: \n{result}'
 
 
 # тестирование состояния склада
-storage1 = Storage(str({
+storage1 = Storage({
     "Принтеры":
         [
             {"equipment_id": "001", "name": "Epson-12345", "price": 12345, "printer_type": "Струйный"},
@@ -80,8 +83,7 @@ storage1 = Storage(str({
         [
             {"equipment_id": "002", "name": "Epson-5432", "price": 5432, "printer_type": "Планшетный"}
         ]
-}))
+})
 
 print(storage1)
-
 # Далее см. "task_05.py"
