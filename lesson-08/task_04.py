@@ -18,7 +18,7 @@ class Printer(Equipment):
         self.printer_type = printer_type
 
     def __str__(self):
-        return f'Название принтера: {self.name}; \nЦена: {self.price} руб.; \nТип принтера {self.printer_type}\n'
+        return f'Название принтера: {self.name}; \nЦена: {self.price} руб.; \nТип принтера: {self.printer_type}\n'
 
 
 class Scanner(Equipment):
@@ -27,7 +27,7 @@ class Scanner(Equipment):
         self.scanner_type = scanner_type
 
     def __str__(self):
-        return f'Название сканера: {self.name}; \nЦена: {self.price}; \nТип сканера {self.scanner_type}\n'
+        return f'Название сканера: {self.name}; \nЦена: {self.price}; \nТип сканера: {self.scanner_type}\n'
 
 
 class Xerox(Equipment):
@@ -36,7 +36,7 @@ class Xerox(Equipment):
         self.xerox_type = xerox_type
 
     def __str__(self):
-        return f'Название копира: {self.name}; \nЦена: {self.price}; \nТип копира {self.xerox_type}\n'
+        return f'Название копира: {self.name}; \nЦена: {self.price}; \nТип копира: {self.xerox_type}\n'
 
 
 # тестирование создания записей об оборудовании
@@ -58,15 +58,22 @@ class Storage:
 
     def __str__(self):
         result = ''
-        stored_equipment = self.stored_equipment
-        for j, section in enumerate(stored_equipment):
+        for j, section in enumerate(self.stored_equipment):
             result += "-" * 45 + '\n'
             result += f'Тип оборудования: {section} \n'
             result += "{:>4} {:>15} {:>7} {:>15} \n".format("ID", "Название", "Цена", "Тип")
-            for i, item in enumerate(stored_equipment[section]):
+            equipment_type = ""
+            for i, item in enumerate(self.stored_equipment[section]):
+                if section == 'Принтеры':
+                    equipment_type = "printer_type"
+                elif section == 'Сканеры':
+                    equipment_type = "scanner_type"
+                elif section == 'Ксероксы':
+                    equipment_type = "xerox_type"
                 result += "{:>4} {:>15} {:>7} {:>15} \n".format(item["equipment_id"],
-                                                                item["name"], item["price"],
-                                                                item["printer_type"])
+                                                                item["name"],
+                                                                item["price"],
+                                                                item[equipment_type])
         result += "-" * 45 + '\n'
         return f'Данные склада: \n{result}'
 
@@ -81,9 +88,10 @@ storage1 = Storage({
         ],
     "Сканеры":
         [
-            {"equipment_id": "002", "name": "Epson-5432", "price": 5432, "printer_type": "Планшетный"}
+            {"equipment_id": "002", "name": "Epson-5432", "price": 5432, "scanner_type": "Планшетный"}
         ]
 })
 
 print(storage1)
+
 # Далее см. "task_05.py"
